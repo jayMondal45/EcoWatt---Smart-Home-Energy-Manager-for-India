@@ -1,0 +1,112 @@
+<!-- templates/register.html -->
+{% extends "base.html" %}
+
+{% block title %}Register - EcoWatt{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Create Account</h1>
+                    <p>Join thousands of Indian families saving on energy bills</p>
+                </div>
+
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}" style="margin-bottom: 2rem;">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" class="form-control" id="email" name="email" required
+                            placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" class="form-control" id="password" name="password" required
+                            placeholder="Create a strong password">
+                        <small style="color: var(--gray); font-size: 0.8rem;">
+                            Must be at least 8 characters with uppercase, lowercase, and numbers
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password *</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required
+                            placeholder="Confirm your password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number (Optional)</label>
+                        <input type="tel" class="form-control" id="phone" name="phone"
+                            placeholder="+91 XXXXXXXXXX">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="household_size">Household Size</label>
+                        <select class="form-control" id="household_size" name="household_size" required>
+                            <option value="1">1 person</option>
+                            <option value="2" selected>2 people</option>
+                            <option value="3">3 people</option>
+                            <option value="4">4 people</option>
+                            <option value="5">5 people</option>
+                            <option value="6">6+ people</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="square_footage">Home Square Footage</label>
+                        <select class="form-control" id="square_footage" name="square_footage" required>
+                            <option value="500">Under 500 sq ft (1BHK)</option>
+                            <option value="750">500 - 1,000 sq ft (2BHK)</option>
+                            <option value="1250" selected>1,000 - 1,500 sq ft (3BHK)</option>
+                            <option value="1750">1,500 - 2,000 sq ft</option>
+                            <option value="2250">Over 2,000 sq ft</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" name="city"
+                            placeholder="Enter your city">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" class="form-control" id="state" name="state"
+                            placeholder="Enter your state">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zip_code">PIN Code</label>
+                        <input type="text" class="form-control" id="zip_code" name="zip_code" 
+                            placeholder="123456">
+                        <small style="color: var(--gray); font-size: 0.8rem;">
+                            Used for local energy rates and government subsidy information
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

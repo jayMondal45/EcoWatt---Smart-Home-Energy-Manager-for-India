@@ -1,0 +1,64 @@
+<!-- templates/admin_query.html -->
+{% extends "base.html" %}
+
+{% block title %}SQL Query - EcoWatt Admin{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container">
+        <h1 style="margin-bottom: 2rem;">🔍 SQL Query Runner</h1>
+        
+        <div style="margin-bottom: 2rem;">
+            <a href="{{ url_for('admin_tables') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Back to Tables
+            </a>
+        </div>
+
+        <div style="background: var(--card-bg); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+            <form method="POST">
+                <div class="form-group">
+                    <label for="query">SQL Query</label>
+                    <textarea class="form-control" id="query" name="query" rows="6" 
+                             placeholder="SELECT * FROM users...">{{ query }}</textarea>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">
+                    <i class="fas fa-play"></i>
+                    Execute Query
+                </button>
+            </form>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-error">
+            <strong>❌ Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+
+        {% if results %}
+        <div style="background: var(--card-bg); padding: 2rem; border-radius: 15px;">
+            <h3 style="color: var(--primary); margin-bottom: 1rem;">
+                📋 Results ({{ results|length }} rows)
+            </h3>
+            
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.05);">
+                    <tbody>
+                        {% for row in results %}
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            {% for cell in row %}
+                            <td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1);">
+                                {{ cell }}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

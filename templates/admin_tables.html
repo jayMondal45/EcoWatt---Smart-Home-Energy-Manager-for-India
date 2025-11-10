@@ -1,0 +1,71 @@
+<!-- templates/admin_tables.html -->
+{% extends "base.html" %}
+
+{% block title %}Database Tables - EcoWatt Admin{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container">
+        <h1 style="margin-bottom: 2rem;">📊 Database Tables</h1>
+        
+        <div style="margin-bottom: 2rem;">
+            <a href="{{ url_for('admin_query') }}" class="btn">
+                <i class="fas fa-database"></i>
+                Run Custom Query
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </div>
+
+        {% for table_name, table_info in tables.items() %}
+        <div style="background: var(--card-bg); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+            <h2 style="color: var(--primary); margin-bottom: 1rem;">
+                🗃️ {{ table_name }} 
+                <span style="color: var(--gray); font-size: 1rem;">({{ table_info.count }} rows)</span>
+            </h2>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Columns:</strong> 
+                <span style="color: var(--gray);">{{ table_info.columns | join(', ') }}</span>
+            </div>
+            
+            {% if table_info.rows %}
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.05);">
+                    <thead>
+                        <tr style="background: var(--primary); color: var(--darker);">
+                            {% for column in table_info.columns %}
+                            <th style="padding: 0.75rem; text-align: left; border: 1px solid rgba(255,255,255,0.1);">
+                                {{ column }}
+                            </th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in table_info.rows %}
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            {% for cell in row %}
+                            <td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); 
+                                      {% if cell == None %}color: var(--gray); font-style: italic;{% endif %}">
+                                {% if cell == None %}
+                                NULL
+                                {% else %}
+                                {{ cell }}
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p style="color: var(--gray); font-style: italic;">No data in table</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

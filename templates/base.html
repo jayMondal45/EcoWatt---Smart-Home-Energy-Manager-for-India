@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EcoWatt - Smart Home Energy Manager for India{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="{{url_for('home')}}" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    EcoWatt
+                </a>
+                <ul class="nav-links">
+                    <li><a href="{{url_for('home')}}">Home</a></li>
+                    <li><a href="{{url_for('savings_calculator')}}">Savings Calculator</a></li>
+                    <li><a href="{{url_for('contact')}}">Contact</a></li>
+                    {% if session.user_email %}
+                    <li><a href="{{url_for('dashboard')}}">Dashboard</a></li>
+                    <li><a href="{{url_for('logout')}}">Logout</a></li>
+                    {% else %}
+                    <li><a href="{{url_for('login')}}">Login</a></li>
+                    <li><a href="{{url_for('register')}}" class="cta">Get Started</a></li>
+                    {% endif %}
+                </ul>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Page-specific content will go here -->
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>EcoWatt</h3>
+                    <p>AI-powered energy management that helps Indian families save money on electricity bills through
+                        smart tracking and personalized recommendations.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="{{url_for('home')}}">Home</a></li>
+                        <li><a href="{{url_for('savings_calculator')}}">Savings Calculator</a></li>
+                        <li><a href="{{url_for('contact')}}">Contact</a></li>
+                        <li><a href="{{url_for('register')}}">Get Started</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Energy Saving Tips</a></li>
+                        <li><a href="#">Device Power Guide</a></li>
+                        <li><a href="#">Government Subsidies</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Get energy saving tips and exclusive deals delivered to your inbox.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your Email" required class="form-control">
+                        <button type="submit" class="btn" style="width: 100%; margin-top: 0.5rem;">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 EcoWatt. All Rights Reserved. | <a href="#" style="color: var(--primary);">Privacy
+                        Policy</a> | <a href="#" style="color: var(--primary);">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Particles.js initialization
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#00D4AA" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#00D4AA",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            }
+        });
+
+        // Mobile menu toggle with enhanced animation
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navLinksContainer = document.querySelector('.nav-links');
+
+            mobileMenu.addEventListener('click', function () {
+                navLinksContainer.classList.toggle('active');
+                this.classList.toggle('active');
+                this.querySelector('i').classList.toggle('fa-bars');
+                this.querySelector('i').classList.toggle('fa-times');
+            });
+
+            // Close mobile menu when clicking on a link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinksContainer.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    mobileMenu.querySelector('i').classList.add('fa-bars');
+                    mobileMenu.querySelector('i').classList.remove('fa-times');
+                });
+            });
+
+            // Navbar scroll effect
+            window.addEventListener('scroll', function () {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.style.background = 'rgba(15, 23, 42, 0.95)';
+                    header.style.backdropFilter = 'blur(20px)';
+                } else {
+                    header.style.background = 'rgba(15, 23, 42, 0.9)';
+                    header.style.backdropFilter = 'blur(20px)';
+                }
+            });
+
+            // Fix for select dropdown background
+            document.querySelectorAll('select').forEach(select => {
+                select.addEventListener('focus', function () {
+                    this.style.backgroundColor = 'rgba(15, 23, 42, 0.95)';
+                });
+
+                select.addEventListener('blur', function () {
+                    this.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                });
+            });
+        });
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

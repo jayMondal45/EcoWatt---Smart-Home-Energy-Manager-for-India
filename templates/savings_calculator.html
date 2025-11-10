@@ -1,0 +1,222 @@
+
+{% extends "base.html" %}
+
+{% block title %}Savings Calculator - EcoWatt{% endblock %}
+
+{% block content %}
+<section class="calculator">
+    <div class="container">
+        <h1 style="text-align: center; margin-bottom: 0.5rem;">Energy Savings Calculator</h1>
+        <p style="text-align: center; color: var(--gray); margin-bottom: 3rem;">
+            See how much you can save with energy-efficient upgrades for Indian homes
+        </p>
+
+        <div class="calculator-grid">
+            <!-- Calculator Form -->
+            <div class="calculator-form">
+                <h3 style="margin-bottom: 1.5rem;">Your Current Situation</h3>
+
+                <div class="form-group">
+                    <label for="currentBill">Current Monthly Electricity Bill</label>
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--gray);">₹</span>
+                        <input type="number" class="form-control" id="currentBill" style="padding-left: 2rem;"
+                            placeholder="0" min="0" step="100" value="3000">
+                    </div>
+                    <small style="color: var(--gray); font-size: 0.8rem;">
+                        Enter your average monthly electricity bill amount
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Energy Improvements</label>
+                    <div style="max-height: 400px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 1rem;">
+                        {% for tip in tips %}
+                        <div style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                            <label style="display: flex; align-items: flex-start; gap: 1rem; cursor: pointer; margin: 0;">
+                                <input type="checkbox" name="improvement" value="{{ tip.id }}"
+                                    style="margin-top: 0.2rem;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; margin-bottom: 0.3rem;">{{ tip.title }}</div>
+                                    <div style="color: var(--gray); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                                        {{ tip.description }}
+                                    </div>
+                                    <div style="display: flex; gap: 1rem; font-size: 0.8rem; flex-wrap: wrap;">
+                                        <span style="color: var(--success);">
+                                            Saves ₹{{ "%.0f"|format(tip.savings_per_year) }}/yr
+                                        </span>
+                                        {% if tip.implementation_cost > 0 %}
+                                        <span style="color: var(--accent);">
+                                            Costs ₹{{ "%.0f"|format(tip.implementation_cost) }}
+                                        </span>
+                                        <span style="color: var(--gray);">
+                                            Payback: {{ tip.payback_months }} months
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button id="calculateBtn" class="btn" style="width: 100%;">
+                    <i class="fas fa-calculator"></i>
+                    Calculate My Savings
+                </button>
+
+                <div style="margin-top: 2rem; padding: 1rem; background: rgba(249, 115, 22, 0.1); border-radius: 10px; border: 1px solid var(--accent);">
+                    <h4 style="margin-bottom: 0.5rem; color: var(--accent);">🇮🇳 Government Subsidies Available</h4>
+                    <p style="color: var(--gray); margin-bottom: 0; font-size: 0.9rem;">
+                        Many energy efficiency upgrades qualify for central and state government subsidies. 
+                        We'll help you identify available programs during implementation.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="calculator-results">
+                <h3 style="margin-bottom: 1.5rem;">Your Potential Savings</h3>
+
+                <div id="resultsPlaceholder" style="text-align: center; color: var(--gray); padding: 2rem;">
+                    <i class="fas fa-calculator" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                    <p>Select improvements and click calculate to see your potential savings</p>
+                </div>
+
+                <div id="resultsContent" style="display: none;">
+                    <div class="result-item">
+                        <span>Annual Savings</span>
+                        <span class="result-value" id="annualSavings">₹0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Monthly Savings</span>
+                        <span class="result-value" id="monthlySavings">₹0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>New Annual Cost</span>
+                        <span class="result-value" id="newAnnualCost">₹0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Implementation Cost</span>
+                        <span class="result-value" id="implementationCost">₹0</span>
+                    </div>
+                    <div class="result-item" style="border-bottom: none;">
+                        <span>Payback Period</span>
+                        <span class="result-value" id="paybackPeriod">0 months</span>
+                    </div>
+
+                    <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(0, 212, 170, 0.1); border-radius: 10px; border: 1px solid var(--primary);">
+                        <h4 style="margin-bottom: 0.5rem; color: var(--primary);">Recommended Action Plan</h4>
+                        <p style="color: var(--gray); margin-bottom: 0;">
+                            Start with the improvements that have the shortest payback period. Consider implementing 1-2 
+                            upgrades every few months to spread out costs. Many upgrades qualify for government subsidies.
+                        </p>
+                    </div>
+
+                    <div style="margin-top: 2rem; text-align: center;">
+                        {% if session.user_email %}
+                        <a href="{{ url_for('dashboard') }}" class="btn">
+                            <i class="fas fa-rocket"></i>
+                            Go to Dashboard
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('register') }}" class="btn">
+                            <i class="fas fa-user-plus"></i>
+                            Get Personalized Plan
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Stories -->
+        <div style="margin-top: 4rem; padding-top: 4rem; border-top: 1px solid rgba(255,255,255,0.1);">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Success Stories from Indian Families</h2>
+            
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-header">
+                        <h4>Bangalore Family</h4>
+                        <div class="tip-savings">Saved ₹800/month</div>
+                    </div>
+                    <p>"By installing solar water heater and switching to LED lighting, we reduced our electricity bill from ₹4,200 to ₹3,400 per month."</p>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-header">
+                        <h4>Chennai Couple</h4>
+                        <div class="tip-savings">Saved ₹1,200/month</div>
+                    </div>
+                    <p>"Replacing our old AC with a 5-star inverter model and using ceiling fans strategically cut our summer electricity bill significantly."</p>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-header">
+                        <h4>Pune Household</h4>
+                        <div class="tip-savings">Saved ₹600/month</div>
+                    </div>
+                    <p>"Simple changes like using smart plugs and optimizing refrigerator settings helped us save without any major investments."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultsPlaceholder = document.getElementById('resultsPlaceholder');
+        const resultsContent = document.getElementById('resultsContent');
+
+        calculateBtn.addEventListener('click', function () {
+            const currentBill = parseFloat(document.getElementById('currentBill').value) || 0;
+            const improvements = Array.from(document.querySelectorAll('input[name="improvement"]:checked'))
+                .map(checkbox => parseInt(checkbox.value));
+
+            if (improvements.length === 0) {
+                alert('Please select at least one improvement to calculate savings.');
+                return;
+            }
+
+            // Show loading state
+            calculateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
+            calculateBtn.disabled = true;
+
+            fetch('/api/calculate-savings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    current_bill: currentBill,
+                    improvements: improvements
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Update results
+                    document.getElementById('annualSavings').textContent = '₹' + data.annual_savings.toLocaleString('en-IN');
+                    document.getElementById('monthlySavings').textContent = '₹' + data.monthly_savings.toLocaleString('en-IN');
+                    document.getElementById('newAnnualCost').textContent = '₹' + data.new_annual_cost.toLocaleString('en-IN');
+                    document.getElementById('implementationCost').textContent = '₹' + data.implementation_cost.toLocaleString('en-IN');
+                    document.getElementById('paybackPeriod').textContent = data.payback_months + ' months';
+
+                    // Show results
+                    resultsPlaceholder.style.display = 'none';
+                    resultsContent.style.display = 'block';
+
+                    // Reset button
+                    calculateBtn.innerHTML = '<i class="fas fa-calculator"></i> Calculate My Savings';
+                    calculateBtn.disabled = false;
+                })
+                .catch(error => {
+                    alert('Error calculating savings: ' + error);
+                    calculateBtn.innerHTML = '<i class="fas fa-calculator"></i> Calculate My Savings';
+                    calculateBtn.disabled = false;
+                });
+        });
+    });
+</script>
+{% endblock %}

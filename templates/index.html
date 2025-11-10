@@ -1,0 +1,193 @@
+
+{% extends "base.html" %}
+
+{% block title %}EcoWatt - Smart Home Energy Manager for India{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="indian-theme">
+            <div class="indian-pattern"></div>
+            <h1 class="hero-title">
+                Stop Overpaying
+                <span style="display: block; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    On Your Electricity Bill
+                </span>
+            </h1>
+            <p class="hero-subtitle">
+                AI-powered energy management that identifies waste, optimizes usage, and saves you real money every month. 
+                Join thousands of Indian homeowners already saving.
+            </p>
+
+            <div class="indian-flag-colors"></div>
+
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+                <a href="{{ url_for('register') }}" class="btn">
+                    <i class="fas fa-bolt"></i>
+                    Start Saving Now
+                </a>
+                <a href="{{ url_for('savings_calculator') }}" class="btn btn-secondary">
+                    <i class="fas fa-calculator"></i>
+                    Calculate Savings
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number">₹3,200</div>
+                    <div class="stat-label">Average Annual Savings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15-30%</div>
+                    <div class="stat-label">Reduction in Energy Bills</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5,000+</div>
+                    <div class="stat-label">Indian Homes Optimized</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section style="padding: 6rem 0; background: rgba(255,255,255,0.02);">
+    <div class="container">
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">How It Works</h2>
+        <p style="text-align: center; color: var(--gray); max-width: 600px; margin: 0 auto 4rem;">Three simple steps to start saving on your electricity bills</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div style="text-align: center; padding: 2rem;">
+                <div style="width: 80px; height: 80px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem;">
+                    1
+                </div>
+                <h3 style="margin-bottom: 1rem;">Track Your Usage</h3>
+                <p style="color: var(--gray);">Add your appliances and devices to see exactly where your energy rupees are going each month.</p>
+            </div>
+
+            <div style="text-align: center; padding: 2rem;">
+                <div style="width: 80px; height: 80px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem;">
+                    2
+                </div>
+                <h3 style="margin-bottom: 1rem;">Get AI Insights</h3>
+                <p style="color: var(--gray);">Our system analyzes your usage patterns and identifies the biggest savings opportunities.</p>
+            </div>
+
+            <div style="text-align: center; padding: 2rem;">
+                <div style="width: 80px; height: 80px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem;">
+                    3
+                </div>
+                <h3 style="margin-bottom: 1rem;">Save Money</h3>
+                <p style="color: var(--gray);">Implement our personalized recommendations and watch your electricity bills drop significantly.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Real Savings Examples -->
+<section style="padding: 6rem 0;">
+    <div class="container">
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">Real People, Real Savings</h2>
+        <p style="text-align: center; color: var(--gray); max-width: 600px; margin: 0 auto 4rem;">See how much our users are saving every month</p>
+
+        <div class="tips-grid">
+            <div class="tip-card">
+                <div class="tip-header">
+                    <h4>The Sharma Family - Mumbai</h4>
+                    <div class="tip-savings">Saved ₹450/month</div>
+                </div>
+                <p>"By switching to LED bulbs and fixing our old refrigerator, we cut our electricity bill by 25%. The payback was just 3 months!"</p>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-header">
+                    <h4>Priya Singh - Delhi</h4>
+                    <div class="tip-savings">Saved ₹620/month</div>
+                </div>
+                <p>"The smart thermostat recommendation alone saved me ₹350/month. I had no idea my AC was running so inefficiently during Delhi summers."</p>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-header">
+                    <h4>Patel Household - Ahmedabad</h4>
+                    <div class="tip-savings">Saved ₹980/month</div>
+                </div>
+                <p>"We discovered our water heater and old AC units were energy hogs. Replacing them with 5-star rated models cut our bill dramatically."</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Energy Saving Tips -->
+<section style="padding: 6rem 0; background: rgba(255,255,255,0.02);">
+    <div class="container">
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">Top Energy Saving Tips for Indian Homes</h2>
+        <p style="text-align: center; color: var(--gray); max-width: 600px; margin: 0 auto 4rem;">Simple changes that make a big difference</p>
+
+        <div class="tips-grid">
+            <div class="tip-card">
+                <div class="tip-header">
+                    <h4>Use Ceiling Fans with AC</h4>
+                    <div class="tip-savings">Save ₹1,000/month</div>
+                </div>
+                <p>Set your AC temperature 2-3°C higher and use ceiling fans. This can reduce AC electricity consumption by 25-30%.</p>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-header">
+                    <h4>Switch to 5-Star Appliances</h4>
+                    <div class="tip-savings">Save ₹600/month</div>
+                </div>
+                <p>BEE 5-star rated appliances consume 30-50% less electricity. Look for the star rating when buying new appliances.</p>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-header">
+                    <h4>Solar Water Heating</h4>
+                    <div class="tip-savings">Save ₹1,200/month</div>
+                </div>
+                <p>Install solar water heaters to reduce your water heating electricity costs by up to 70%. Government subsidies available.</p>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-header">
+                    <h4>LED Lighting</h4>
+                    <div class="tip-savings">Save ₹500/month</div>
+                </div>
+                <p>Replace all incandescent and CFL bulbs with LED bulbs. They use 75% less energy and last much longer.</p>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-header">
+                    <h4>Smart Power Management</h4>
+                    <div class="tip-savings">Save ₹250/month</div>
+                </div>
+                <p>Use smart plugs to eliminate phantom loads from TVs, set-top boxes, and chargers when not in use.</p>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-header">
+                    <h4>Regular Maintenance</h4>
+                    <div class="tip-savings">Save ₹400/month</div>
+                </div>
+                <p>Clean AC filters monthly and service appliances regularly. Well-maintained appliances work more efficiently.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section style="padding: 6rem 0; background: var(--gradient); text-align: center;">
+    <div class="container">
+        <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--darker);">Ready to Start Saving?</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; color: var(--darker); opacity: 0.9;">
+            Join thousands of Indian homeowners already saving hundreds on their electricity bills
+        </p>
+        <a href="{{ url_for('register') }}" class="btn" style="background: var(--darker); color: var(--light);">
+            <i class="fas fa-bolt"></i>
+            Get Started Free
+        </a>
+    </div>
+</section>
+{% endblock %}

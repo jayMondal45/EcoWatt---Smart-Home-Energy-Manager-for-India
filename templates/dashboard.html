@@ -1,0 +1,239 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard - EcoWatt{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>Your Energy Dashboard</h1>
+            <div style="color: var(--gray);">
+                Welcome back! • {{ user.household_size }} person household • {{ user.square_footage }} sq ft
+                {% if user.city %}{{ user.city }}{% endif %}
+            </div>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- Cost Overview -->
+        <div class="cost-display">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                <div>
+                    <div class="cost-amount">₹{{ "%.0f"|format(total_monthly_cost) }}</div>
+                    <div class="cost-label">Monthly Energy Cost</div>
+                </div>
+                <div>
+                    <div class="cost-amount">₹{{ "%.0f"|format(estimated_annual_cost) }}</div>
+                    <div class="cost-label">Annual Projection</div>
+                </div>
+                <div>
+                    <div class="cost-amount">{{ devices|length }}</div>
+                    <div class="cost-label">Devices Tracked</div>
+                </div>
+                <div>
+                    <div class="cost-amount">
+                        {% if total_monthly_cost > 0 %}
+                        ₹{{ "%.0f"|format(estimated_annual_cost * 0.25) }}
+                        {% else %}
+                        ₹0
+                        {% endif %}
+                    </div>
+                    <div class="cost-label">Potential Annual Savings</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="devices-grid">
+            <!-- Devices List -->
+            <div class="devices-list">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3>Your Energy Usage</h3>
+                    <span style="color: var(--gray); font-size: 0.9rem;">{{ devices|length }} devices</span>
+                </div>
+
+                {% if devices %}
+                {% for device in devices %}
+                <div class="device-item">
+                    <div>
+                        <strong>{{ device.device_name }}</strong>
+                        <div style="color: var(--gray); font-size: 0.9rem;">
+                            {{ device.power_watts }}W • {{ device.hours_per_day }} hrs/day
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div class="device-power">₹{{ "%.0f"|format(device.monthly_cost) }}/mo</div>
+                        <a href="{{ url_for('delete_device', device_id=device.id) }}" class="btn"
+                            style="padding: 0.3rem 0.6rem; background: var(--danger); font-size: 0.8rem;"
+                            onclick="return confirm('Are you sure you want to delete this device?')">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div style="text-align: center; color: var(--gray); padding: 3rem;">
+                    <i class="fas fa-plug" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                    <p>No devices added yet. Start by adding your appliances below.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Add Device Form -->
+            <div class="add-device-form">
+                <h3 style="margin-bottom: 1.5rem;">Add New Device</h3>
+                <form id="addDeviceForm">
+                    <div class="form-group">
+                        <label for="deviceSelect">Common Indian Devices</label>
+                        <select class="form-control" id="deviceSelect">
+                            <option value="">Select a device...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deviceName">Device Name</label>
+                        <input type="text" class="form-control" id="deviceName" required
+                            placeholder="e.g., Living Room AC, Kitchen Refrigerator">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="powerWatts">Power Consumption (Watts)</label>
+                        <input type="number" class="form-control" id="powerWatts" required min="1"
+                            placeholder="e.g., 1500">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hoursPerDay">Hours Used Per Day</label>
+                        <input type="number" class="form-control" id="hoursPerDay" required step="0.5" min="0" max="24"
+                            placeholder="e.g., 4.5">
+                        <small style="color: var(--gray); font-size: 0.8rem;">
+                            Estimate average daily usage
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;">
+                        <i class="fas fa-plus"></i>
+                        Add Device
+                    </button>
+                </form>
+
+                <div style="margin-top: 2rem; padding: 1rem; background: rgba(0, 212, 170, 0.1); border-radius: 10px;">
+                    <h4 style="margin-bottom: 0.5rem; color: var(--primary);">💡 Pro Tip</h4>
+                    <p style="color: var(--gray); font-size: 0.9rem; margin: 0;">
+                        Check your appliance nameplate or user manual for accurate power consumption details. 
+                        Most Indian households can save 20-30% by optimizing device usage.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Savings Recommendations -->
+        <div style="margin-top: 3rem;">
+            <h3 style="margin-bottom: 1.5rem;">Personalized Savings Recommendations</h3>
+            <div class="tips-grid">
+                {% for tip in tips %}
+                <div class="tip-card">
+                    <div class="tip-header">
+                        <h4>{{ tip.title }}</h4>
+                        <div class="tip-savings">Save ₹{{ "%.0f"|format(tip.savings_per_year) }}/yr</div>
+                    </div>
+                    <p style="margin-bottom: 1rem; color: var(--gray);">{{ tip.description }}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="tip-difficulty">{{ tip.difficulty }}</span>
+                        <span style="color: var(--gray); font-size: 0.9rem;">
+                            {% if tip.implementation_cost > 0 %}
+                            Cost: ₹{{ "%.0f"|format(tip.implementation_cost) }} • Payback: {{ tip.payback_months }} months
+                            {% else %}
+                            No cost • Immediate savings
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Monthly Savings Goal -->
+        <div style="margin-top: 3rem; background: var(--card-bg); padding: 2rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+            <h3 style="margin-bottom: 1rem;">Your Savings Goal</h3>
+            <p style="color: var(--gray); margin-bottom: 1.5rem;">
+                Based on your household size and current usage, you could save approximately 
+                <strong style="color: var(--primary);">₹{{ "%.0f"|format(total_monthly_cost * 0.25) }}/month</strong> 
+                by implementing our recommendations.
+            </p>
+            
+            <div style="background: rgba(255,255,255,0.1); height: 10px; border-radius: 5px; overflow: hidden;">
+                <div style="background: var(--gradient); height: 100%; width: 25%; border-radius: 5px;"></div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                <span style="color: var(--gray); font-size: 0.9rem;">Current</span>
+                <span style="color: var(--primary); font-size: 0.9rem;">25% Savings Potential</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Load common devices
+        fetch('/api/common-devices')
+            .then(response => response.json())
+            .then(devices => {
+                const select = document.getElementById('deviceSelect');
+                devices.forEach(device => {
+                    const option = document.createElement('option');
+                    option.value = device.watts;
+                    option.textContent = `${device.name} (${device.watts}W)`;
+                    select.appendChild(option);
+                });
+
+                select.addEventListener('change', function () {
+                    if (this.value) {
+                        document.getElementById('powerWatts').value = this.value;
+                        document.getElementById('deviceName').value = this.options[this.selectedIndex].text.split(' (')[0];
+                    }
+                });
+            });
+
+        // Add device form
+        document.getElementById('addDeviceForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                device_name: document.getElementById('deviceName').value,
+                power_watts: parseInt(document.getElementById('powerWatts').value),
+                hours_per_day: parseFloat(document.getElementById('hoursPerDay').value)
+            };
+
+            fetch('/add-device', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error adding device: ' + error);
+                });
+        });
+    });
+</script>
+{% endblock %}

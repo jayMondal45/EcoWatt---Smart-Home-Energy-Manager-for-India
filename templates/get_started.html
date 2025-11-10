@@ -1,0 +1,88 @@
+
+{% extends "base.html" %}
+
+{% block title %}Get Started - EcoWatt{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container">
+        <div style="max-width: 600px; margin: 0 auto; padding: 4rem 0;">
+            <h1 style="text-align: center; margin-bottom: 0.5rem;">Let's Get Started</h1>
+            <p style="text-align: center; color: var(--gray); margin-bottom: 3rem;">
+                Tell us about your home to get personalized energy savings recommendations for Indian households
+            </p>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}" style="margin-bottom: 2rem;">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <div class="add-device-form">
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required
+                            placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="household_size">Household Size</label>
+                        <select class="form-control" id="household_size" name="household_size" required>
+                            <option value="1">1 person</option>
+                            <option value="2" selected>2 people</option>
+                            <option value="3">3 people</option>
+                            <option value="4">4 people</option>
+                            <option value="5">5 people</option>
+                            <option value="6">6+ people</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="square_footage">Home Square Footage</label>
+                        <select class="form-control" id="square_footage" name="square_footage" required>
+                            <option value="500">Under 500 sq ft (1BHK)</option>
+                            <option value="750">500 - 1,000 sq ft (2BHK)</option>
+                            <option value="1250" selected>1,000 - 1,500 sq ft (3BHK)</option>
+                            <option value="1750">1,500 - 2,000 sq ft</option>
+                            <option value="2250">Over 2,000 sq ft</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zip_code">PIN Code (Optional)</label>
+                        <input type="text" class="form-control" id="zip_code" name="zip_code" placeholder="110001"
+                            pattern="[0-9]{6}">
+                        <small style="color: var(--gray); font-size: 0.8rem;">
+                            Used for local electricity rates and government subsidy information
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;">
+                        <i class="fas fa-rocket"></i>
+                        Create My Energy Profile
+                    </button>
+                </form>
+
+                <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="color: var(--gray); font-size: 0.9rem;">
+                        <i class="fas fa-lock"></i>
+                        Your data is secure and private. We never share your personal information.
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin-top: 1rem;">
+                    <p style="color: var(--gray); font-size: 0.9rem;">
+                        Already have an account? <a href="{{ url_for('login') }}" style="color: var(--primary);">Login here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

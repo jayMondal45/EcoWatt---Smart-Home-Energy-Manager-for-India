@@ -1,0 +1,144 @@
+
+{% extends "base.html" %}
+
+{% block title %}Contact Us - EcoWatt{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container">
+        <div style="max-width: 800px; margin: 0 auto; padding: 4rem 0;">
+            <h1 style="text-align: center; margin-bottom: 0.5rem;">Contact Us</h1>
+            <p style="text-align: center; color: var(--gray); margin-bottom: 3rem;">
+                Have questions? We're here to help you save more on your electricity bills.
+            </p>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}" style="margin-bottom: 2rem;">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>support@ecowatt.in</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+91 1800-ECOWATT</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Support Hours</h4>
+                            <p>Monday - Friday: 9am - 8pm IST<br>Saturday: 10am - 6pm IST</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-comments"></i>
+                        <div>
+                            <h4>Live Chat</h4>
+                            <p>Available during business hours for immediate assistance</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-lightbulb"></i>
+                        <div>
+                            <h4>WhatsApp Support</h4>
+                            <p>+91 98765 43210<br>Quick responses for energy queries</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h3>Send us a Message</h3>
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">How can we help you?</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" required
+                                placeholder="Tell us about your energy saving goals or any questions you have..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn" style="width: 100%;">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div style="margin-top: 4rem; padding-top: 4rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                <h2 style="text-align: center; margin-bottom: 2rem;">Frequently Asked Questions</h2>
+
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>How accurate are the savings estimates?</h4>
+                        <p style="color: var(--gray); margin: 0;">
+                            Our estimates are based on Indian energy consumption patterns and real-world testing. Individual results may vary based on your specific usage patterns and state electricity rates.
+                        </p>
+                    </div>
+
+                    <div class="tip-card">
+                        <h4>Is my data secure?</h4>
+                        <p style="color: var(--gray); margin: 0;">
+                            Yes! We take privacy seriously. Your data is encrypted and we never share your personal information with third parties without your consent. We comply with Indian data protection regulations.
+                        </p>
+                    </div>
+
+                    <div class="tip-card">
+                        <h4>Do I need to buy any hardware?</h4>
+                        <p style="color: var(--gray); margin: 0;">
+                            No hardware required! Our system works by analyzing the devices you already own. We provide recommendations based on your current setup and usage patterns.
+                        </p>
+                    </div>
+
+                    <div class="tip-card">
+                        <h4>How often should I update my device list?</h4>
+                        <p style="color: var(--gray); margin: 0;">
+                            We recommend reviewing your devices every 3-6 months, or whenever you add new appliances or change your usage patterns significantly.
+                        </p>
+                    </div>
+
+                    <div class="tip-card">
+                        <h4>Do you provide information about government subsidies?</h4>
+                        <p style="color: var(--gray); margin: 0;">
+                            Yes! We provide updated information about central and state government subsidies for solar panels, energy-efficient appliances, and other green initiatives.
+                        </p>
+                    </div>
+
+                    <div class="tip-card">
+                        <h4>Can I use this for my business?</h4>
+                        <p style="color: var(--gray); margin: 0;">
+                            Currently we focus on residential energy management. However, many of our tips and recommendations apply to small businesses and offices as well.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

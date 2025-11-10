@@ -1,0 +1,24 @@
+Flask==2.3.3
+Werkzeug==2.3.7
+Jinja2==3.1.2
+itsdangerous==2.1.2
+click==8.1.7
+MarkupSafe==2.1.3
+blinker==1.6.2
+
+# Production server (optional, for deployment)
+gunicorn==21.2.0
+
+# For future email functionality
+# Flask-Mail==0.9.1
+
+# For database migrations (optional)
+# Flask-Migrate==4.0.5
+# alembic==1.12.0
+
+# For environment variables (recommended for production)
+python-dotenv==1.0.0
+
+# For enhanced security (optional)
+# Flask-Talisman==1.0.0
+# Flask-Limiter==3.5.0
